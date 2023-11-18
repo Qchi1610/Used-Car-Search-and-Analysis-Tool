@@ -36,5 +36,7 @@ for car in cars:
             st.write(discript)
             st.write(contact)
         with left_column:
-            img_test = Image.open('images/test.jpg')
-            st.image(img_test)
+            car_img = car.find('div', class_="cb5")
+            car_img = car.find('img')
+            car_img = car_img.get('src') 
+            st.image(car_img)
