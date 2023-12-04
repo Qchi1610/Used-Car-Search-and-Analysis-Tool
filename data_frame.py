@@ -1,7 +1,9 @@
 import pandas as pd
 import streamlit as st
 
+
 def reset():
+    st.session_state['Search'] = False
     st.session_state['brand'] = 'All' 
     st.session_state['year'] = 'All'
     st.session_state['price'] = [0, 2000]

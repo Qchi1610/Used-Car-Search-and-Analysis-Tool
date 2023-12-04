@@ -24,8 +24,8 @@ class MultiApp:
                 styles={
                     "container": {"padding": "5!important", "background-colour": "black"} ,
                     "icon": {"colour": "white", "font-size": "23px"},
-                    "nav-link": {"colour": "white", "font-size": "20px", "margin":"0px", "--hover-color": "#3A8F7F"}, 
-                    "nav-link-selected": {"background-color": "#02ab21"} 
+                    "nav-link": {"colour": "white", "font-size": "20px", "margin":"0px", "--hover-color": "#9e7157"}, 
+                    "nav-link-selected": {"background-color": "#E3651D"}
                     }
                     
             )

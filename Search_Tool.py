@@ -11,9 +11,9 @@ def app():
     st.sidebar.header('Search Bar')
     tag_brand = st.sidebar.selectbox('Brand', ['All'] + sorted(['Audi', 'Bentley', 'BMW', 'Chevrolet', 'Daewoo', 'Ford', 'Honda', 'Hyundai', 'Isuzu', 'Jeep', 'Kia', 'LandRover', 'Lexus', 'Mazda', 'Mercedes Benz', 'MG', 'Mini', 'Mitsubishi', 'Nissan', 'Peugeot', 'Porsche', 'Subaru', 'Suzuki', 
                                             'Toyota', 'VinFast', 'Volkswagen', 'Volvo', 'Acura','Alfa Romeo','Asia','Aston Martin','Baic','Brilliance','Buick','BYD','Cadillac','Changan','Chery','Chrysler','Citroen','Daihatsu',
-                                                'Datsun','Dodge','Dongben','Dongfeng','Ferrari','Fiat','Gaz','Geely','Genesis','GMC','Haima','Haval','Hino','Hongqi','Hummer','Infiniti','Jaguar',
-                                                'JRD','Lada','Lamborghini','Lifan','Lincoln','Luxgen','Maserati','Maybach','McLaren','Mekong','Mercury','Morgan','Opel','Pontiac','Proton','RAM','Renault',
-                                                'Rolls Royce','Rover','Samsung','Scion','Skoda','Smart','SYM','Tesla','Thaco','Tobe','Ssangyong','UAZ','Vinaxuki','Wuling','Zotye']) + ['Other'], key='brand')   
+                                            'Datsun','Dodge','Dongben','Dongfeng','Ferrari','Fiat','Gaz','Geely','Genesis','GMC','Haima','Haval','Hino','Hongqi','Hummer','Infiniti','Jaguar',
+                                            'JRD','Lada','Lamborghini','Lifan','Lincoln','Luxgen','Maserati','Maybach','McLaren','Mekong','Mercury','Morgan','Opel','Pontiac','Proton','RAM','Renault',
+                                            'Rolls Royce','Rover','Samsung','Scion','Skoda','Smart','SYM','Tesla','Thaco','Tobe','Ssangyong','UAZ','Vinaxuki','Wuling','Zotye']) + ['Other'], key='brand')   
     tag_year = st.sidebar.selectbox('Year Of Manufacture', ['All'] + list(reversed(range(1994, 2024))), key='year')
     tag_price = st.sidebar.slider('Price Range', 0, 2000, [0, 2000], key='price')
 
@@ -24,7 +24,7 @@ def app():
         st.session_state['tag_brand'] = tag_brand
     if 'tag_year' not in st.session_state:
         st.session_state['tag_year'] = tag_year
-    if 'tag_price_0' not in st.session_state:
+    if 'tag_price' not in st.session_state:
         st.session_state['tag_price'] = tag_price
     if 'page_count' not in st.session_state:
         st.session_state['page_count'] = 0
@@ -34,31 +34,17 @@ def app():
         st.session_state['last'] = 20
     if 'Search' not in st.session_state:
         st.session_state['Search'] = False
-    # if 'empty' not in st.session_state:
-    #     st.session_state['empty'] = True
+    
+    if st.session_state['Search'] == False:
+        st.session_state['info'] = data_frame.data_table(tag_brand, tag_year, tag_price, all_data)
+    else:
+        st.session_state['info'] = data_frame.search_tool(search, all_data)
 
     return_home = st.button(":house: Home Page", on_click=data_frame.reset)
     if return_home:
-        st.session_state['Search'] = False
         st.session_state['page_count'] = 0
         st.session_state['first'] = 0
         st.session_state['last'] = 20
-
-    if tag_brand != st.session_state['tag_brand'] or tag_year != st.session_state['tag_year'] or tag_price != st.session_state['tag_price']:
-        st.session_state['Search'] = False
-        st.session_state['tag_brand'] = tag_brand 
-        st.session_state['tag_year'] = tag_year
-        st.session_state['tag_price'] = tag_price
-        st.session_state['page_count'] = 0
-        st.session_state['first'] = 0
-        st.session_state['last'] = 20
-    if len(st.session_state['info']) < st.session_state['last'] and len(st.session_state['info']) < 20 :
-        st.session_state['last'] = len(st.session_state['info'])
-    elif len(st.session_state['info']) < st.session_state['last']:
-        st.session_state['last'] = len(st.session_state['info'])
-    else:
-        st.session_state['last'] = st.session_state['first'] + 20
-
 
     #Search Input
     with st.form(key="Search Item", clear_on_submit=True):
@@ -75,13 +61,21 @@ def app():
                 st.session_state['page_count'] = 0
                 st.session_state['Search'] = True
 
-    if st.session_state['Search'] == False:
-        st.session_state['info'] = data_frame.data_table(tag_brand, tag_year, tag_price, all_data)
-    # elif tag_brand == st.session_state['tag_brand'] or tag_year == st.session_state['tag_year'] or tag_price == st.session_state['tag_price']:
-    #     st.session_state['info'] = data_frame.data_table(tag_brand, tag_year, tag_price, all_data)
+    
+    if tag_brand != st.session_state['tag_brand'] or tag_year != st.session_state['tag_year'] or tag_price != st.session_state['tag_price']:
+        st.session_state['Search'] = False
+        st.session_state['tag_brand'] = tag_brand 
+        st.session_state['tag_year'] = tag_year
+        st.session_state['tag_price'] = tag_price
+        st.session_state['page_count'] = 0
+        st.session_state['first'] = 0
+        st.session_state['last'] = 20
+    if len(st.session_state['info']) < st.session_state['last'] and len(st.session_state['info']) < 20 :
+        st.session_state['last'] = len(st.session_state['info'])
+    elif len(st.session_state['info']) < st.session_state['last']:
+        st.session_state['last'] = len(st.session_state['info'])
     else:
-        st.session_state['info'] = data_frame.search_tool(search, all_data)
-
+        st.session_state['last'] = st.session_state['first'] + 20
 
     #Page Control
     st.sidebar.header('Page Control')
@@ -110,7 +104,9 @@ def app():
             st.session_state['last'] = int(page_input * 20 + 20)
 
     #Hiển thị thông tin xe
-    if st.session_state['info'].empty == False:
+    if st.session_state['info'].empty == True:
+        st.warning('No Result')
+    else:
         with st.container():
             for i in range (st.session_state['first'], st.session_state['last']):
                 st.write("---")
@@ -134,9 +130,11 @@ def app():
                         st.warning('No Picture')
                     else:
                         st.image(st.session_state['info']['img'].iloc[i], width= 250)
-    
-    else:
-        st.warning('No Result')
+
+        
+        
+        
+        
 
 
 

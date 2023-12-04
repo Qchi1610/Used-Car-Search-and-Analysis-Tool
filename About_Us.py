@@ -35,21 +35,19 @@ def app():
                             </h1>""", unsafe_allow_html=True)
     mem_1, mem_2, mem_3, mem_4 = st.columns(4)
     with mem_1:
-        st.image("img/lqc.jpeg", caption="Luong Quynh Chi \
-                                            11220983")
+        st.image("img/lqc.jpeg", caption="Luong Quynh Chi")
 
     with mem_2:
-        st.image("img/nmh.jpeg", caption="Nguyen Minh Huong \
-                                            11223344")
+        st.image("img/nmh.jpeg", caption="Nguyen Minh Huong")
 
     with mem_3:
-        st.image("img/ttq.jpeg", caption="Tran Truc Quynh \
-                                            11225583")
+        st.image("img/ttq.jpeg", caption="Tran Truc Quynh")
 
     with mem_4:
         st.image("img/nvn.jpeg", caption="Nguyen Van Ngoc")
 
 
+    st.write('---')
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""<h1 style='text-align: center; font-family: Candara; font-size: 25px'>
