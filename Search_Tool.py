@@ -130,11 +130,3 @@ def app():
                         st.warning('No Picture')
                     else:
                         st.image(st.session_state['info']['img'].iloc[i], width= 250)
-
-        
-        
-        
-        
-
-
-

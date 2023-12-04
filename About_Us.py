@@ -8,27 +8,12 @@ def app():
                     USED CAR SEARCH AND ANALYSIS TOOL
                     </h1>""", unsafe_allow_html=True)
     st.write('---')
-    # st.markdown("""<p style='text-align: center; color: #ffefd6;'>
-    #                     useful for those who are on a diet to optimize overall health.
-    #                     </p>""", unsafe_allow_html=True)
-
-    # st.markdown("""<h1 style='text-align: center; font-family: Candara; font-size: 25px'>
-    #                 Introduction
-    #                 </h1>""", unsafe_allow_html=True)
-
-
+    
     def load_lottiefile(filepath: str):
         with open(filepath, "r") as f:
             return json.load(f)
-        
-    # def load_lottieurl(url: str):
-    #     res = requests.get(url)
-    #     if res.status_code != 200:
-    #         return None
-    #     return res.json()
 
     st.balloons()
-
 
     st.markdown("""<h1 style='text-align: center; font-family: Candara; font-size: 30px'>
                             Our Member
