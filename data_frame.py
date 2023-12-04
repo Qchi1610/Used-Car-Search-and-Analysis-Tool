@@ -727,15 +727,13 @@ def data_table(tag_brand, tag_year, tag_price, all_data):
         
 
     if tag_price[0] != 0 and tag_price[1] != 2000:
-        data = data[(data['Gia so'] >= tag_price[0]) and (data['Gia so'] <= tag_price[1])]
+        data = data[(data['Gia so'] >= tag_price[0]) & (data['Gia so'] <= tag_price[1])]
     
     elif tag_price[0] != 0:
         data = data[data['Gia so'] >= tag_price[0]]
 
     elif tag_price[1] != 2000:
         data = data[data['Gia so'] <= tag_price[1]]
-    
-
 
     return data
 
