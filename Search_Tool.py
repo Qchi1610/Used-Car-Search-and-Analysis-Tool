@@ -109,14 +109,21 @@ def app():
             st.session_state['last'] += 20 
     with col3:
         page_num = len(st.session_state['info']) / 20
-        if st.session_state['page_count'] > page_num or st.session_state['page_count'] <= 0:
+        if st.session_state['page_count'] > page_num or st.session_state['page_count'] < 0:
             st.session_state['first'] = 0
             st.session_state['last'] = 20
             st.session_state['page_count'] = 0
         page_input = st.number_input(f'{st.session_state.page_count}/{int(page_num)}', value=None, placeholder='Insert page number...')
         if page_input:
             st.session_state['first'] = int(page_input * 20)
-            st.session_state['last'] = int(page_input * 20 + 20)    
+            st.session_state['last'] = int(page_input * 20 + 20)
+            st.session_state['page_count'] = page_input
+
+        if st.session_state['page_count'] > page_num or st.session_state['page_count'] < 0 or page_input == 0:
+            st.session_state['first'] = 0
+            st.session_state['last'] = 20
+            st.session_state['page_count'] = 0
+        
 
     #Hiển thị thông tin xe
     if st.session_state['info'].empty == True:
