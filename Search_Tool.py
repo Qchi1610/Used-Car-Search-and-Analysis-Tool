@@ -3,7 +3,21 @@ import streamlit as st
 import data_frame
 
 def app():
-    st.markdown("""<h1 style='text-align: center; font-family: Candara; font-size: 50px'>
+    def set_background():
+        page_bg_img = f"""
+            <style>
+            [data-testid="stAppViewContainer"] > .main {{
+            background-image: url("https://static.carsdn.co/cldstatic/wp-content/uploads/MultiCar.png");
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-attachment: local;
+            opacity: 0,5;
+            }}
+            </style>
+            """ 
+        st.markdown(page_bg_img, unsafe_allow_html=True)
+    set_background()
+    st.markdown("""<h1 style='text-align: center; font-family: Candara; font-size: 50px; color: White; text-shadow: -1px 0 black, 0 1px black,      1px 0 black, 0 -1px black'>
                     USED CAR SEARCH
                     </h1>""", unsafe_allow_html=True)
     st.write('---')
@@ -70,6 +84,7 @@ def app():
         st.session_state['page_count'] = 0
         st.session_state['first'] = 0
         st.session_state['last'] = 20
+        
     if len(st.session_state['info']) < st.session_state['last'] and len(st.session_state['info']) < 20 :
         st.session_state['last'] = len(st.session_state['info'])
     elif len(st.session_state['info']) < st.session_state['last']:
@@ -94,14 +109,14 @@ def app():
             st.session_state['last'] += 20 
     with col3:
         page_num = len(st.session_state['info']) / 20
-        if st.session_state['page_count'] > page_num or st.session_state['page_count'] < 0:
+        if st.session_state['page_count'] > page_num or st.session_state['page_count'] <= 0:
             st.session_state['first'] = 0
             st.session_state['last'] = 20
             st.session_state['page_count'] = 0
         page_input = st.number_input(f'{st.session_state.page_count}/{int(page_num)}', value=None, placeholder='Insert page number...')
         if page_input:
             st.session_state['first'] = int(page_input * 20)
-            st.session_state['last'] = int(page_input * 20 + 20)
+            st.session_state['last'] = int(page_input * 20 + 20)    
 
     #Hiển thị thông tin xe
     if st.session_state['info'].empty == True:
