@@ -48,12 +48,14 @@ def app():
         st.session_state['last'] = 20
     if 'Search' not in st.session_state:
         st.session_state['Search'] = False
+
     
     if st.session_state['Search'] == False:
         st.session_state['info'] = data_frame.data_table(tag_brand, tag_year, tag_price, all_data)
     else:
         st.session_state['info'] = data_frame.search_tool(search, all_data)
 
+    
     return_home = st.button(":house: Home Page", on_click=data_frame.reset)
     if return_home:
         st.session_state['page_count'] = 0
@@ -69,11 +71,12 @@ def app():
             st.text('Search')
             submit_serach = st.form_submit_button("Search", on_click= data_frame.reset)
             if submit_serach:
+                st.session_state['Search'] = True
                 st.session_state['info'] = data_frame.search_tool(search, all_data)
                 st.session_state['first'] = 0
                 st.session_state['last'] = 20
                 st.session_state['page_count'] = 0
-                st.session_state['Search'] = True
+    # st.write(st.session_state['Search'])
 
     
     if tag_brand != st.session_state['tag_brand'] or tag_year != st.session_state['tag_year'] or tag_price != st.session_state['tag_price']:
@@ -85,6 +88,41 @@ def app():
         st.session_state['first'] = 0
         st.session_state['last'] = 20
         
+        
+
+    #Page Control
+    with st.form(key="Page Control"):
+        st.sidebar.header('Page Control')
+        col1, col2, col3 = st.sidebar.columns((3,2.5,2.5))
+        with col1:
+            page_previous_1 = st.button('Previous')
+            if page_previous_1:
+                st.session_state['page_count'] -= 1
+                st.session_state['first'] -= 20
+                st.session_state['last'] -= 20
+        with col2:
+            page_next_1 = st.button('Next')
+            if page_next_1:
+                st.session_state['page_count'] += 1
+                st.session_state['first'] += 20
+                st.session_state['last'] += 20 
+        with col3:
+            page_num = len(st.session_state['info']) / 20
+            if st.session_state['page_count'] > page_num or st.session_state['page_count'] < 0:
+                st.session_state['first'] = 0
+                st.session_state['last'] = 20
+                st.session_state['page_count'] = 0
+            page_input = st.number_input(f'{st.session_state.page_count}/{int(page_num)}', value=None, placeholder='Insert page number...', )
+            if page_input:
+                st.session_state['first'] = int(page_input * 20)
+                st.session_state['last'] = int(page_input * 20 + 20)
+                st.session_state['page_count'] = page_input
+
+            if st.session_state['page_count'] > page_num or st.session_state['page_count'] < 0 or page_input == 0:
+                st.session_state['first'] = 0
+                st.session_state['last'] = 20
+                st.session_state['page_count'] = 0
+            
     if len(st.session_state['info']) < st.session_state['last'] and len(st.session_state['info']) < 20 :
         st.session_state['last'] = len(st.session_state['info'])
     elif len(st.session_state['info']) < st.session_state['last']:
@@ -92,39 +130,7 @@ def app():
     else:
         st.session_state['last'] = st.session_state['first'] + 20
 
-    #Page Control
-    st.sidebar.header('Page Control')
-    col1, col2, col3 = st.sidebar.columns((3,2.5,2.5))
-    with col1:
-        page_previous_1 = st.button('Previous')
-        if page_previous_1:
-            st.session_state['page_count'] -= 1
-            st.session_state['first'] -= 20
-            st.session_state['last'] -= 20
-    with col2:
-        page_next_1 = st.button('Next')
-        if page_next_1:
-            st.session_state['page_count'] += 1
-            st.session_state['first'] += 20
-            st.session_state['last'] += 20 
-    with col3:
-        page_num = len(st.session_state['info']) / 20
-        if st.session_state['page_count'] > page_num or st.session_state['page_count'] < 0:
-            st.session_state['first'] = 0
-            st.session_state['last'] = 20
-            st.session_state['page_count'] = 0
-        page_input = st.number_input(f'{st.session_state.page_count}/{int(page_num)}', value=None, placeholder='Insert page number...')
-        if page_input:
-            st.session_state['first'] = int(page_input * 20)
-            st.session_state['last'] = int(page_input * 20 + 20)
-            st.session_state['page_count'] = page_input
-
-        if st.session_state['page_count'] > page_num or st.session_state['page_count'] < 0 or page_input == 0:
-            st.session_state['first'] = 0
-            st.session_state['last'] = 20
-            st.session_state['page_count'] = 0
-        
-
+    
     #Hiển thị thông tin xe
     if st.session_state['info'].empty == True:
         st.warning('No Result')
